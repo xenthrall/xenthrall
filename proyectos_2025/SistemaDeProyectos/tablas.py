@@ -20,8 +20,8 @@ class TablaTareas:
                 ft.DataColumn(label=ft.Text("estado")),
                 ft.DataColumn(label=ft.Text("fecha_inicio")),
                 ft.DataColumn(label=ft.Text("fecha_fin")),
+                ft.DataColumn(label=ft.Text("Proyecto")),
                 ft.DataColumn(label=ft.Text("empleado")),
-                ft.DataColumn(label=ft.Text("proyecto")),
                 ft.DataColumn(label=ft.Text("Acciones")),
             ],
             border=ft.border.all(1, ft.Colors.GREY),
@@ -44,8 +44,8 @@ class TablaTareas:
                         ft.DataCell(ft.Text(f"{e[2]}")),
                         ft.DataCell(ft.Text(e[3])),
                         ft.DataCell(ft.Text(e[4])),
-                        ft.DataCell(ft.Text(e[5])),
-                        ft.DataCell(ft.Text(e[5])),
+                        ft.DataCell(ft.Text(Proyecto.obtener_nombre_proyecto(e[5]))),#Proyecto
+                        ft.DataCell(ft.Text(Empleados.obtener_nombre_empleado(e[6]))),#Empleado
                         ft.DataCell(
                             ft.IconButton(
                                 icon=ft.Icons.DELETE,
@@ -66,7 +66,7 @@ class TablaTareas:
         Elimina pryecto de la base de datos y actualiza la tabla.
 
         """
-        Empleados.eliminar_registro(id)
+        Tarea.eliminar_registro(id)
         self.actualizar_tabla()  # Llamada para actualizar la tabla
 
     

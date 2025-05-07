@@ -70,7 +70,7 @@ def formulario_registro_tarea(page: ft.Page, tabla_tareas: TablaTareas):
 
                     tabla_tareas.actualizar_tabla()
 
-                    estado_registro.value = "Proyecto actualizado exitosamente"
+                    estado_registro.value = "Tarea actualizada exitosamente"
                     estado_registro.color = ft.colors.GREEN
                     page.update()
 
@@ -134,7 +134,7 @@ def formulario_registro_tarea(page: ft.Page, tabla_tareas: TablaTareas):
                     nueva_tarea.guardar_registro()
                     tabla_tareas.actualizar_tabla()
 
-                    estado_registro.value = "Proyecto registrado exitosamente"
+                    estado_registro.value = "Tarea asignada exitosamente"
                     estado_registro.color = ft.colors.GREEN
                     page.update()
 
@@ -143,6 +143,9 @@ def formulario_registro_tarea(page: ft.Page, tabla_tareas: TablaTareas):
 
                     estado.value = ""
                     descripcion.value = ""
+
+                    id_empleado.value = ""
+                    id_proyecto.value = ""
 
                     año_inicio.value = ""
                     mes_inicio.value = ""
@@ -189,7 +192,7 @@ def formulario_registro_tarea(page: ft.Page, tabla_tareas: TablaTareas):
                 horizontal_alignment=ft.CrossAxisAlignment.CENTER,
                 spacing=20,
                 controls=[
-                    ft.Text("Registrar Proyecto", size=24, weight="bold"),
+                    ft.Text("Asignar Tarea", size=24, weight="bold"),
 
                     ft.Container(content=ft.Row([id_proyecto, id_empleado])),
 

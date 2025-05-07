@@ -96,13 +96,21 @@ class Tarea:
 
     @staticmethod
     def eliminar_registro(id):
-        conn, cursor = conectar_db()
-        if conn:
-            sql = "DELETE FROM tareas WHERE id_tarea=%s"
-            valores = (id,)
-            cursor.execute(sql, valores)
-            conn.commit()
-            conn.close()
+        try:
+            conn, cursor = conectar_db()
+            if conn:
+                sql = "DELETE FROM tareas WHERE id_tarea = %s"
+                valores = (id,)
+                cursor.execute(sql, valores)
+                conn.commit()
+                cursor.close()
+                conn.close()
+                return True
+            else:
+                return False
+        except Exception as e:
+            print(f"Error al eliminar la tarea: {e}")
+            return False
 
     @staticmethod
     def obtener_todos():
@@ -112,6 +120,8 @@ class Tarea:
             resultados = cursor.fetchall()
             conn.close()
         return resultados
+    
+    
     
 
     @staticmethod
@@ -198,6 +208,15 @@ class Empleados:
             conn.close()
         return resultados
     
+    @staticmethod
+    def obtener_nombre_empleado(id):
+        conn, cursor = conectar_db()
+        if conn:
+            cursor.execute("SELECT * FROM empleados WHERE id_empleado = %s ",(id,))
+            resultados = cursor.fetchone()
+            conn.close()
+        return resultados[1]
+    
 
     @staticmethod
     def obtener_por_id_proyecto(id_proyecto):
@@ -218,7 +237,6 @@ class Empleados:
         resultado = cursor.fetchall()
         conn.close()
         return resultado
-
 
 
 """
@@ -287,6 +305,16 @@ class Proyecto:
             conn.close()
         return resultados
     
+    @staticmethod
+    def obtener_nombre_proyecto(id):
+        conn, cursor = conectar_db()
+        proyectos = []
+        if conn:
+            cursor.execute("SELECT * FROM proyectos")
+            resultados = cursor.fetchone()
+            conn.close()
+        return resultados[1]
+    
 
     @staticmethod
     def obtener_por_id_proyecto(id_proyecto):
@@ -308,4 +336,3 @@ class Proyecto:
         conn.close()
         return resultado
     
-

@@ -421,7 +421,7 @@ def formulario_registro_proyecto(page: ft.Page, tabla_proyecto: TablaProyectos):
                 else:
                     #Una pequeña verificacion de si se quiere registrar la fecha fin del proyecto
                     if año_fin.value.strip() and año_fin.value.strip() and dia_fin.value.strip():
-                        fecha_fin = f"{año_fin.value.zfill(4)}-{mes_fin.value.zfill(2)}-{mes_fin.value.zfill(2)}"
+                        fecha_fin = f"{año_fin.value.zfill(4)}-{mes_fin.value.zfill(2)}-{dia_fin.value.zfill(2)}"
 
                     else:
                         fecha_fin = None

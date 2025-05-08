@@ -1,13 +1,5 @@
 import mysql.connector
 
-"""
-Asocia una materia a un profesor.
-
-:param id_profesor: ID del profesor
-:param id_materia: ID de la materia
-:return: Tupla (nombre, apellido) o None si no existe
-"""
-
 db_name = "SistemaDeProyectos"
 
 def conectar_db():
@@ -25,7 +17,7 @@ def conectar_db():
     conn = mysql.connector.connect(
         host="localhost",
         user="root",
-        password="Inthesky1@",
+        password="contraseña_usuario_root",
         database=db_name
     )
    

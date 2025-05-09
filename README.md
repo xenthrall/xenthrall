@@ -12,6 +12,7 @@ The main goal of this repository is twofold:
 
 This repository is organized by **year-based folders**, each containing the projects I build during that specific year.
 
+```
 xenthral/
 ├── proyectos_2025/
 │ ├── xenthrall-academy/
@@ -19,7 +20,7 @@ xenthral/
 ├── proyectos_2026/
 │ └── (future projects)
 └── README.md
-
+```
 - `proyectos_2025/` contains all my projects created in 2025.
 - When 2026 arrives, a new folder `proyectos_2026/` will be created for that year's projects, and so on.
 

@@ -592,8 +592,9 @@ def main(page: ft.Page):
                     content=ft.Row(
                         [
                             formulario_registro_proyecto(page,tabla_proyecto),
-                            tabla_proyecto.construir_tabla()
-                            ]),
+                            tabla_proyecto.construir_tabla(),
+                            ]
+                            ),
                     alignment=ft.alignment.center,
                     padding=30,
                 ),
@@ -624,7 +625,7 @@ def main(page: ft.Page):
 
             ft.Tab(
                 text="ver Tareas",
-                icon=ft.icons.BOOK,
+                icon=ft.icons.REMOVE_RED_EYE,
                 content=ft.Container(
                     content=tabla_tareas.construir_tabla(),
                     alignment=ft.alignment.center,

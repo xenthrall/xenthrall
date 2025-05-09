@@ -59,8 +59,6 @@ class TablaTareas:
         self.table.rows = new_rows
         self.page.update()
 
-  
-
     def eliminar_registro(self, e, id):
         """
         Elimina pryecto de la base de datos y actualiza la tabla.
@@ -71,7 +69,6 @@ class TablaTareas:
 
     
     def construir_tabla(self):
-       
         return ft.Container(content=self.table,expand=1)
     
 

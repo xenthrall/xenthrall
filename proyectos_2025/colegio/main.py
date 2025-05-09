@@ -10,6 +10,12 @@ from views.estudiantes import estudiantes
 from views.profesores import profesores
 
 
+from views.notas_view import notas_view
+from views.asistencias_view import asistencias_view
+
+from views.reportes import reportes_view
+
+
 # Lista de opciones del menú lateral
 def menu_lateral():
     return [
@@ -87,7 +93,7 @@ def menu_lateral():
 
 
 def main(page: ft.Page):
-    page.title = "Colegio"
+    page.title = "Xenthrall - Academy"
     page.vertical_alignment = ft.MainAxisAlignment.CENTER
     page.horizontal_alignment = ft.MainAxisAlignment.CENTER
     page.theme_mode = ft.ThemeMode.LIGHT
@@ -118,6 +124,15 @@ def main(page: ft.Page):
         elif index == 4:
             contenido_principal.controls.append(profesores(page)) #Vista del modulo profesores
 
+        elif index == 5:
+            contenido_principal.controls.append(asistencias_view(page)) #Vista del modulo Asistencia
+        
+        elif index == 6:
+            contenido_principal.controls.append(notas_view(page)) #Vista del modulo Notas
+          
+
+        elif index == 7:
+            contenido_principal.controls.append(reportes_view(page)) #Vista del modulo Reportes
 
         elif index == 8:
             contenido_principal.controls.append(ft.Text("Desarrollado por la empresa XENTHRALL 👽🚀"))

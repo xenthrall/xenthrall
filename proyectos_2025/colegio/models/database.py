@@ -1,4 +1,5 @@
 import mysql.connector
+from datetime import date
 
 db_name = "colegio"
 
@@ -6,10 +7,9 @@ def conectar_db():
     conn = mysql.connector.connect(
         host="localhost",
         user="root",
-        password="Inthesky1@",
+        password="xenthrall1@",
         database=db_name
     )
-   
     cursor = conn.cursor()
 
     return conn, cursor
@@ -23,6 +23,306 @@ def execute_query(query):
     conn.close()
 
     return lista
+
+
+class Reportes:
+    """
+    Clase para generar diferentes reportes del sistema escolar.
+    """
+    @staticmethod
+    def reporte_inscripcion_cursos():
+        """
+        Retorna el número de estudiantes inscritos en cada curso.
+        :return: Lista de tuplas (id_curso, nombre_curso, total_estudiantes)
+        """
+        conn, cursor = conectar_db()
+        try:
+            sql = (
+                "SELECT c.id_curso, c.nombre, COUNT(e.id_estudiante) "
+                "FROM curso c "
+                "LEFT JOIN estudiante e ON c.id_curso = e.id_curso "
+                "GROUP BY c.id_curso, c.nombre"
+            )
+            cursor.execute(sql)
+            return cursor.fetchall()
+        finally:
+            conn.close()
+
+    @staticmethod
+    def reporte_asistencia_por_estudiante(id_estudiante: int, fecha_inicio: date = None, fecha_fin: date = None):
+        """
+        Retorna conteo de estados de asistencia ('Presente','Ausente','Tarde') para un estudiante
+        en un rango de fechas opcional.
+        :return: Diccionario {estado: conteo}
+        """
+        conn, cursor = conectar_db()
+        try:
+            params = [id_estudiante]
+            sql = (
+                "SELECT estado_asistencia, COUNT(*) "
+                "FROM asistencia WHERE id_estudiante = %s"
+            )
+            if fecha_inicio:
+                sql += " AND fecha >= %s"
+                params.append(fecha_inicio)
+            if fecha_fin:
+                sql += " AND fecha <= %s"
+                params.append(fecha_fin)
+            sql += " GROUP BY estado_asistencia"
+            cursor.execute(sql, tuple(params))
+            return {row[0]: row[1] for row in cursor.fetchall()}
+        finally:
+            conn.close()
+
+    @staticmethod
+    def reporte_asistencia_por_curso(id_curso: int, fecha_inicio: date = None, fecha_fin: date = None):
+        """
+        Retorna resumen de asistencia por curso (agrupado por estado).
+        :return: Diccionario {estado: conteo}
+        """
+        conn, cursor = conectar_db()
+        try:
+            params = [id_curso]
+            sql = (
+                "SELECT a.estado_asistencia, COUNT(*) "
+                "FROM asistencia a "
+                "JOIN estudiante e ON a.id_estudiante = e.id_estudiante "
+                "WHERE e.id_curso = %s"
+            )
+            if fecha_inicio:
+                sql += " AND a.fecha >= %s"
+                params.append(fecha_inicio)
+            if fecha_fin:
+                sql += " AND a.fecha <= %s"
+                params.append(fecha_fin)
+            sql += " GROUP BY a.estado_asistencia"
+            cursor.execute(sql, tuple(params))
+            return {row[0]: row[1] for row in cursor.fetchall()}
+        finally:
+            conn.close()
+
+    @staticmethod
+    def reporte_promedio_notas_por_estudiante(id_estudiante: int):
+        """
+        Retorna el promedio de notas de un estudiante por materia.
+        :return: Lista de tuplas (id_materia, promedio_nota)
+        """
+        conn, cursor = conectar_db()
+        try:
+            sql = (
+                "SELECT n.id_materia, AVG(n.nota) "
+                "FROM notas n "
+                "WHERE n.id_estudiante = %s "
+                "GROUP BY n.id_materia"
+            )
+            cursor.execute(sql, (id_estudiante,))
+            return cursor.fetchall()
+        finally:
+            conn.close()
+
+    @staticmethod
+    def reporte_promedio_notas_por_materia(id_materia: int):
+        """
+        Retorna el promedio de notas de todos los estudiantes en una materia.
+        :return: Float promedio
+        """
+        conn, cursor = conectar_db()
+        try:
+            sql = "SELECT AVG(nota) FROM notas WHERE id_materia = %s"
+            cursor.execute(sql, (id_materia,))
+            return cursor.fetchone()[0]
+        finally:
+            conn.close()
+
+    @staticmethod
+    def reporte_estadisticas_notas_por_curso(id_curso: int):
+        """
+        Retorna promedio, nota máxima y mínima por curso.
+        :return: Lista de tuplas (id_materia, avg, min, max)
+        """
+        conn, cursor = conectar_db()
+        try:
+            sql = (
+                "SELECT n.id_materia, AVG(n.nota), MIN(n.nota), MAX(n.nota) "
+                "FROM notas n "
+                "JOIN estudiante e ON n.id_estudiante = e.id_estudiante "
+                "WHERE e.id_curso = %s "
+                "GROUP BY n.id_materia"
+            )
+            cursor.execute(sql, (id_curso,))
+            return cursor.fetchall()
+        finally:
+            conn.close()
+
+
+class Asistencia:
+    """
+    Clase para gestionar la asistencia de estudiantes.
+    """
+    @staticmethod
+    def registrar_asistencia(id_estudiante, fecha, estado) -> None:
+        """
+        Registra la asistencia de un estudiante en una fecha dada.
+
+        :param id_estudiante: ID del estudiante
+        :param fecha: Fecha de la asistencia (objeto datetime.date)
+        :param estado: Uno de 'Presente', 'Ausente', 'Tarde'
+        """
+        conn, cursor = conectar_db()
+        try:
+            sql = (
+                "INSERT INTO asistencia (id_estudiante, fecha, estado_asistencia) "
+                "VALUES (%s, %s, %s)"
+            )
+            cursor.execute(sql, (id_estudiante, fecha, estado))
+            conn.commit()
+        except mysql.connector.Error as e:
+            print(f"Error al registrar asistencia: {e}")
+        finally:
+            conn.close()
+    
+    @staticmethod
+    def obtener_asistencia_por_estudiante_y_fecha(id_estudiante: int, fecha: date):
+        conn, cursor = conectar_db()
+        try:
+            sql = "SELECT id_asistencia, estado_asistencia FROM asistencia WHERE id_estudiante = %s AND fecha = %s"
+            cursor.execute(sql, (id_estudiante, fecha))
+            return cursor.fetchone() # Retorna (id_asistencia, estado) o None
+        finally:
+            conn.close()
+
+    @staticmethod
+    def obtener_asistencias_por_estudiante(id_estudiante: int):
+        """
+        Obtiene todas las asistencias de un estudiante.
+
+        :param id_estudiante: ID del estudiante
+        :return: Lista de tuplas (id_asistencia, id_estudiante, fecha, estado_asistencia)
+        """
+        conn, cursor = conectar_db()
+        try:
+            sql = "SELECT id_asistencia, id_estudiante, fecha, estado_asistencia FROM asistencia WHERE id_estudiante = %s"
+            cursor.execute(sql, (id_estudiante,))
+            resultados = cursor.fetchall()
+            return resultados
+        finally:
+            conn.close()
+
+    @staticmethod
+    def actualizar_asistencia(id_asistencia: int, estado: str) -> None:
+        """
+        Actualiza el estado de asistencia de un registro existente.
+
+        :param id_asistencia: ID del registro de asistencia
+        :param estado: Nuevo estado ('Presente', 'Ausente', 'Tarde')
+        """
+        conn, cursor = conectar_db()
+        try:
+            sql = "UPDATE asistencia SET estado_asistencia = %s WHERE id_asistencia = %s"
+            cursor.execute(sql, (estado, id_asistencia))
+            conn.commit()
+        except mysql.connector.Error as e:
+            print(f"Error al actualizar asistencia: {e}")
+        finally:
+            conn.close()
+
+    @staticmethod
+    def eliminar_asistencia(id_asistencia: int) -> None:
+        """
+        Elimina un registro de asistencia.
+
+        :param id_asistencia: ID del registro de asistencia
+        """
+        conn, cursor = conectar_db()
+        try:
+            sql = "DELETE FROM asistencia WHERE id_asistencia = %s"
+            cursor.execute(sql, (id_asistencia,))
+            conn.commit()
+        except mysql.connector.Error as e:
+            print(f"Error al eliminar asistencia: {e}")
+        finally:
+            conn.close()
+
+
+class Nota:
+    """
+    Clase para gestionar las notas de los estudiantes en distintas materias.
+    """
+    @staticmethod
+    def registrar_nota(id_estudiante: int, id_materia: int, nota: float, fecha) -> None:
+        """
+        Registra una nueva nota para un estudiante en una materia.
+
+        :param id_estudiante: ID del estudiante
+        :param id_materia: ID de la materia
+        :param nota: Calificación (decimal)
+        :param fecha: Fecha de la nota (objeto datetime.date)
+        """
+        conn, cursor = conectar_db()
+        try:
+            sql = (
+                "INSERT INTO notas (id_estudiante, id_materia, nota, fecha) "
+                "VALUES (%s, %s, %s, %s)"
+            )
+            cursor.execute(sql, (id_estudiante, id_materia, nota, fecha))
+            conn.commit()
+        except mysql.connector.Error as e:
+            print(f"Error al registrar nota: {e}")
+        finally:
+            conn.close()
+
+    @staticmethod
+    def obtener_notas_por_estudiante(id_estudiante: int):
+        """
+        Obtiene todas las notas de un estudiante.
+
+        :param id_estudiante: ID del estudiante
+        :return: Lista de tuplas (id_nota, id_estudiante, id_materia, nota, fecha)
+        """
+        conn, cursor = conectar_db()
+        try:
+            sql = "SELECT id_nota, id_estudiante, id_materia, nota, fecha FROM notas WHERE id_estudiante = %s"
+            cursor.execute(sql, (id_estudiante,))
+            resultados = cursor.fetchall()
+            return resultados
+        finally:
+            conn.close()
+
+    @staticmethod
+    def actualizar_nota(id_nota: int, nueva_nota: float) -> None:
+        """
+        Actualiza el valor de una nota existente.
+
+        :param id_nota: ID del registro de nota
+        :param nueva_nota: Nuevo valor de la calificación
+        """
+        conn, cursor = conectar_db()
+        try:
+            sql = "UPDATE notas SET nota = %s WHERE id_nota = %s"
+            cursor.execute(sql, (nueva_nota, id_nota))
+            conn.commit()
+        except mysql.connector.Error as e:
+            print(f"Error al actualizar nota: {e}")
+        finally:
+            conn.close()
+
+    @staticmethod
+    def eliminar_nota(id_nota: int) -> None:
+        """
+        Elimina un registro de nota.
+
+        :param id_nota: ID del registro de nota
+        """
+        conn, cursor = conectar_db()
+        try:
+            sql = "DELETE FROM notas WHERE id_nota = %s"
+            cursor.execute(sql, (id_nota,))
+            conn.commit()
+        except mysql.connector.Error as e:
+            print(f"Error al eliminar nota: {e}")
+        finally:
+            conn.close()
+
 
 
 class MateriaProfesor:
@@ -248,6 +548,21 @@ class Estudiante:
         resultado = cursor.fetchall()
         conn.close()
         return resultado
+    
+    @staticmethod
+    def obtener_nombre_completo(id_estudiante: int) -> str:
+        """Obtiene nombre completo de un estudiante por su ID"""
+        conn, cursor = conectar_db()
+        try:
+            cursor.execute(
+                "SELECT nombre, apellido FROM estudiante WHERE id_estudiante = %s",
+                (id_estudiante,)
+            )
+            if resultado := cursor.fetchone():
+                return f"{resultado[0]} {resultado[1]}"
+            return None
+        finally:
+            conn.close()
 
 """
 -- Tabla materia

@@ -17,10 +17,9 @@ def conectar_db():
     conn = mysql.connector.connect(
         host="localhost",
         user="root",
-        password="contraseña_usuario_root",
+        password="Inthesky1@",
         database=db_name
     )
-   
     cursor = conn.cursor()
     conn.commit()
 

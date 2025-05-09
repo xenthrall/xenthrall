@@ -388,118 +388,68 @@ class Nota:
 
 
 class MateriaProfesor:
-    def __init__(self): # No es necesario si todos los métodos son estáticos
+    def __init__(self):
         pass
 
     @staticmethod
-    def asociar_materia_a_profesor(id_profesor: int, id_materia: int) -> bool:
+    def asociar_materia_a_profesor(id_profesor, id_materia):
         """
         Asocia una materia a un profesor.
+
         :param id_profesor: ID del profesor
         :param id_materia: ID de la materia
-        :return: True si fue exitoso, False en caso contrario.
         """
         conn, cursor = conectar_db()
-        if not conn:
-            return False
-        try:
-            query = "INSERT INTO profesor_materia (id_profesor, id_materia) VALUES (?, ?)"
-            cursor.execute(query, (id_profesor, id_materia))
-            conn.commit()
-            return True
-        except sqlite3.IntegrityError: # Específico para violación de PK o FK
-            print(f"No se pudo asociar: El profesor ya está asociado a esta materia o alguno de los IDs no existe.")
-            return False
-        except sqlite3.Error as e:
-            print(f"Error al asociar materia a profesor: {e}")
-            return False
-        finally:
-            if conn:
-                conn.close()
+        query = "INSERT INTO profesor_materia (id_profesor, id_materia) VALUES (?, ?)"
+        cursor.execute(query, (id_profesor, id_materia))
+        conn.commit()
+        conn.close()
 
     @staticmethod
-    def obtener_materias_por_profesor(id_profesor: int):
-        """
-        Obtiene las materias asociadas a un profesor.
-        :return: Lista de tuplas (id_materia, nombre_materia) o None.
-        """
+    def obtener_materias_por_profesor(id_profesor):
         conn, cursor = conectar_db()
-        if not conn:
-            return None
-        try:
-            query = """
-                SELECT m.id_materia, m.nombre_materia
-                FROM materia m
-                INNER JOIN profesor_materia pm ON m.id_materia = pm.id_materia
-                WHERE pm.id_profesor = ?
-            """
-            cursor.execute(query, (id_profesor,))
-            return cursor.fetchall()
-        except sqlite3.Error as e:
-            print(f"Error en obtener_materias_por_profesor: {e}")
-            return None
-        finally:
-            if conn:
-                conn.close()
+        
+        query = """
+            SELECT m.id_materia, m.nombre_materia
+            FROM materia m
+            INNER JOIN profesor_materia pm ON m.id_materia = pm.id_materia
+            WHERE pm.id_profesor = ?
+        """
+        
+        cursor.execute(query, (id_profesor,))
+        materias = cursor.fetchall()
+        
+        conn.close()
+        
+        # Retorna lista de diccionarios (opcional) [{"id": m[0], "nombre": m[1]} for m in materias]
+        return materias
+    
 
     @staticmethod
-    def eliminar_asociacion_profesor_materia(id_profesor: int, id_materia: int) -> bool:
-        """
-        Elimina una asociación específica entre profesor y materia.
-        :param id_profesor: ID del profesor
-        :param id_materia: ID de la materia
-        :return: True si la eliminación fue exitosa, False en caso contrario.
-        """
-        conn, cursor = conectar_db()
-        if not conn:
-            return False
-        try:
-            query = "DELETE FROM profesor_materia WHERE id_profesor = ? AND id_materia = ?"
-            cursor.execute(query, (id_profesor, id_materia))
-            conn.commit()
-            return cursor.rowcount > 0
-        except sqlite3.Error as e:
-            print(f"Error al eliminar asociación profesor-materia: {e}")
-            return False
-        finally:
-            if conn:
-                conn.close()
-
-    @staticmethod
-    def eliminar_materias_de_profesor(id_profesor: int, ids_materias: list) -> bool:
+    def eliminar_materias_de_profesor(id_profesor, ids_materias):
         """
         Elimina una o varias materias asociadas a un profesor.
+        
         :param id_profesor: ID del profesor
         :param ids_materias: Lista de IDs de materias a eliminar
-        :return: True si todas las eliminaciones fueron exitosas (o no había nada que eliminar), False si alguna falló.
         """
         conn, cursor = conectar_db()
-        if not conn:
-            return False
         
-        all_successful = True
-        try:
-            conn.execute("BEGIN TRANSACTION") # Para asegurar atomicidad si se desea
-            query = "DELETE FROM profesor_materia WHERE id_profesor = ? AND id_materia = ?"
-            for id_materia in ids_materias:
-                cursor.execute(query, (id_profesor, id_materia))
-                if cursor.rowcount == 0:
-                    # Podrías querer registrar esto o simplemente continuar
-                    print(f"Advertencia: No se encontró asociación para profesor {id_profesor} y materia {id_materia} para eliminar.")
-            conn.commit()
-        except sqlite3.Error as e:
-            print(f"Error al eliminar materias de profesor: {e}")
-            if conn:
-                conn.rollback()
-            all_successful = False
-        finally:
-            if conn:
-                conn.close()
-        return all_successful
+        query = """
+            DELETE FROM profesor_materia
+            WHERE id_profesor = ? AND id_materia = ?
+        """
+        
+        for id_materia in ids_materias:
+            cursor.execute(query, (id_profesor, id_materia))
+        
+        conn.commit()
+        conn.close()
+
 
 
 class Profesor:
-    def __init__(self, nombre: str, apellido: str, email: str = None, telefono: str = None, id_profesor: int = None):
+    def __init__(self, nombre, apellido, email = None, telefono = None, id_profesor = None):
         self.id_profesor = id_profesor
         self.nombre = nombre
         self.apellido = apellido
@@ -507,295 +457,145 @@ class Profesor:
         self.telefono = telefono
         
     @staticmethod
-    def obtener_nombre_completo_profesor(id_profesor: int):
+    def obtener_nombre_completo_profesor(id_profesor):
         """
         Retorna el nombre y apellido de un profesor dado su ID.
+
         :param id_profesor: ID del profesor
-        :return: String "nombre apellido" o None si no existe o hay error.
+        :return: Tupla (nombre, apellido) o None si no existe
         """
         conn, cursor = conectar_db()
-        if not conn:
-            return None
+        
         try:
             query = "SELECT nombre, apellido FROM profesor WHERE id_profesor = ?"
             cursor.execute(query, (id_profesor,))
             resultado = cursor.fetchone()
-            if resultado:
-                return f"{resultado[0]} {resultado[1]}"
-            return None
-        except sqlite3.Error as e:
-            print(f"Error en obtener_nombre_completo_profesor: {e}")
-            return None
+            nombre_completo = f"{resultado[0]} {resultado[1]}"
+            return nombre_completo
         finally:
-            if conn:
-                conn.close()
+            conn.close()
 
-    def guardar_registro(self) -> int | None:
-        """ Guarda el profesor actual en la BD. Retorna el ID del profesor insertado o None. """
+    def guardar_registro(self):
         conn, cursor = conectar_db()
-        if not conn:
-            return None
-        try:
+        if conn:
             sql = "INSERT INTO profesor (nombre, apellido, email, telefono) VALUES (?, ?, ?, ?)"
             valores = (self.nombre, self.apellido, self.email, self.telefono)
             cursor.execute(sql, valores)
             conn.commit()
-            self.id_profesor = cursor.lastrowid # Obtener el ID asignado por AUTOINCREMENT
-            return self.id_profesor
-        except sqlite3.Error as e:
-            print(f"Error al guardar profesor: {e}")
-            return None
-        finally:
-            if conn:
-                conn.close()
+            conn.close()
 
-    def actualizar_registro(self) -> bool:
-        """ Actualiza el profesor actual en la BD. """
-        if self.id_profesor is None:
-            print("Error: ID de profesor no especificado para actualizar.")
-            return False
+    def actualizar_registro(self):
         conn, cursor = conectar_db()
-        if not conn:
-            return False
-        try:
+        if conn:
             sql = "UPDATE profesor SET nombre=?, apellido=?, email=?, telefono=? WHERE id_profesor=?"
             valores = (self.nombre, self.apellido, self.email, self.telefono, self.id_profesor)
             cursor.execute(sql, valores)
             conn.commit()
-            return cursor.rowcount > 0
-        except sqlite3.Error as e:
-            print(f"Error al actualizar profesor: {e}")
-            return False
-        finally:
-            if conn:
-                conn.close()
+            conn.close()
 
-    def eliminar_registro(self) -> bool:
-        """ Elimina el profesor actual de la BD. """
-        if self.id_profesor is None:
-            print("Error: ID de profesor no especificado para eliminar.")
-            return False
+    def eliminar_registro(self):
         conn, cursor = conectar_db()
-        if not conn:
-            return False
-        try:
+        if conn:
             sql = "DELETE FROM profesor WHERE id_profesor=?"
             valores = (self.id_profesor,)
             cursor.execute(sql, valores)
             conn.commit()
-            return cursor.rowcount > 0
-        except sqlite3.Error as e:
-            print(f"Error al eliminar profesor: {e}")
-            return False
-        finally:
-            if conn:
-                conn.close()
+            conn.close()
 
     @staticmethod
     def obtener_todos():
-        """ Obtiene todos los profesores de la BD. Retorna una lista de objetos Profesor o None. """
         conn, cursor = conectar_db()
-        if not conn:
-            return None
-        profesores_obj = []
-        try:
-            cursor.execute("SELECT id_profesor, nombre, apellido, email, telefono FROM profesor")
+        if conn:
+            cursor.execute("SELECT * FROM profesor")
             resultados = cursor.fetchall()
-            for row in resultados:
-                profesores_obj.append(Profesor(id_profesor=row[0], nombre=row[1], apellido=row[2], email=row[3], telefono=row[4]))
-            return profesores_obj
-        except sqlite3.Error as e:
-            print(f"Error al obtener todos los profesores: {e}")
-            return None
-        finally:
-            if conn:
-                conn.close()
+        return resultados
 
-    @staticmethod
-    def obtener_por_id(id_profesor: int):
-        """ Obtiene un profesor por su ID. Retorna un objeto Profesor o None. """
-        conn, cursor = conectar_db()
-        if not conn:
-            return None
-        try:
-            cursor.execute("SELECT id_profesor, nombre, apellido, email, telefono FROM profesor WHERE id_profesor = ?", (id_profesor,))
-            row = cursor.fetchone()
-            if row:
-                return Profesor(id_profesor=row[0], nombre=row[1], apellido=row[2], email=row[3], telefono=row[4])
-            return None
-        except sqlite3.Error as e:
-            print(f"Error al obtener profesor por ID: {e}")
-            return None
-        finally:
-            if conn:
-                conn.close()
 
 
 class Estudiante:
-    def __init__(self, nombre: str, apellido: str, id_curso: int, fecha_nacimiento: date = None, 
-                 direccion: str = None, telefono: str = None, email: str = None, id_estudiante: int = None):
+    def __init__(self, nombre, apellido, id_curso, fecha_nacimiento = None, direccion = None, telefono = None, email = None, id_estudiante = None):
         self.id_estudiante = id_estudiante
         self.nombre = nombre
         self.apellido = apellido
-        self.fecha_nacimiento = str(fecha_nacimiento) if fecha_nacimiento else None # Guardar como string
+        self.fecha_nacimiento = fecha_nacimiento
         self.direccion = direccion
         self.telefono = telefono
         self.email = email
         self.id_curso = id_curso
 
-    def guardar_registro(self) -> int | None:
-        """ Guarda el estudiante actual en la BD. Retorna el ID del estudiante insertado o None. """
+    def guardar_registro(self):
         conn, cursor = conectar_db()
-        if not conn:
-            return None
-        try:
+        if conn:
             sql = "INSERT INTO estudiante (nombre, apellido, fecha_nacimiento, direccion, telefono, email, id_curso) VALUES (?, ?, ?, ?, ?, ?, ?)"
             valores = (self.nombre, self.apellido, self.fecha_nacimiento, self.direccion, self.telefono, self.email, self.id_curso)
             cursor.execute(sql, valores)
             conn.commit()
-            self.id_estudiante = cursor.lastrowid
-            return self.id_estudiante
-        except sqlite3.Error as e:
-            print(f"Error al guardar estudiante: {e}")
-            return None
-        finally:
-            if conn:
-                conn.close()
+            conn.close()
 
-    def actualizar_registro(self) -> bool:
-        """ Actualiza el estudiante actual en la BD. """
-        if self.id_estudiante is None:
-            print("Error: ID de estudiante no especificado para actualizar.")
-            return False
+    def actualizar_registro(self):
         conn, cursor = conectar_db()
-        if not conn:
-            return False
-        try:
+        if conn:
             sql = "UPDATE estudiante SET nombre=?, apellido=?, fecha_nacimiento=?, direccion=?, telefono=?, email=?, id_curso=? WHERE id_estudiante=?"
             valores = (self.nombre, self.apellido, self.fecha_nacimiento, self.direccion, self.telefono, self.email, self.id_curso, self.id_estudiante)
             cursor.execute(sql, valores)
             conn.commit()
-            return cursor.rowcount > 0
-        except sqlite3.Error as e:
-            print(f"Error al actualizar estudiante: {e}")
-            return False
-        finally:
-            if conn:
-                conn.close()
+            conn.close()
 
-    def eliminar_registro(self) -> bool:
-        """ Elimina el estudiante actual de la BD. """
-        if self.id_estudiante is None:
-            print("Error: ID de estudiante no especificado para eliminar.")
-            return False
+    def eliminar_registro(self):
         conn, cursor = conectar_db()
-        if not conn:
-            return False
-        try:
+        if conn:
             sql = "DELETE FROM estudiante WHERE id_estudiante=?"
             valores = (self.id_estudiante,)
             cursor.execute(sql, valores)
             conn.commit()
-            return cursor.rowcount > 0
-        except sqlite3.Error as e:
-            print(f"Error al eliminar estudiante: {e}")
-            return False
-        finally:
-            if conn:
-                conn.close()
+            conn.close()
 
     @staticmethod
     def obtener_todos():
-        """ Obtiene todos los estudiantes. Retorna lista de objetos Estudiante o None. """
         conn, cursor = conectar_db()
-        if not conn:
-            return None
-        estudiantes_obj = []
-        try:
-            cursor.execute("SELECT id_estudiante, nombre, apellido, fecha_nacimiento, direccion, telefono, email, id_curso FROM estudiante")
+        estudiantes = []
+        if conn:
+            cursor.execute("SELECT * FROM estudiante")
             resultados = cursor.fetchall()
             for row in resultados:
-                # Convertir fecha_nacimiento de string a date si es necesario al crear el objeto, o manejarlo como string
-                fn_date = date.fromisoformat(row[3]) if row[3] else None
-                estudiantes_obj.append(Estudiante(id_estudiante=row[0], nombre=row[1], apellido=row[2], 
-                                              fecha_nacimiento=fn_date, direccion=row[4], 
-                                              telefono=row[5], email=row[6], id_curso=row[7]))
-            return estudiantes_obj
-        except sqlite3.Error as e:
-            print(f"Error al obtener todos los estudiantes: {e}")
-            return None
-        finally:
-            if conn:
-                conn.close()
+                estudiantes.append(Estudiante(row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[0]))
+            conn.close()
+        return resultados
 
     @staticmethod
-    def obtener_por_id_curso(id_curso: int):
-        """ Filtra estudiantes por curso. Retorna lista de objetos Estudiante o None. """
+    def obtener_por_id_curso(id_curso):
+        """
+        Objetivo:Filtrar estudiantes por curso.
+
+        Args:
+            (id_curso).
+
+        Returns:
+            Lista: de estudiantes.
+        """
         conn, cursor = conectar_db()
-        if not conn:
-            return None
-        estudiantes_obj = []
-        try:
-            sql = "SELECT id_estudiante, nombre, apellido, fecha_nacimiento, direccion, telefono, email, id_curso FROM estudiante WHERE id_curso=?"
-            valores = (id_curso,)
-            cursor.execute(sql, valores)
-            resultados = cursor.fetchall()
-            for row in resultados:
-                fn_date = date.fromisoformat(row[3]) if row[3] else None
-                estudiantes_obj.append(Estudiante(id_estudiante=row[0], nombre=row[1], apellido=row[2], 
-                                            fecha_nacimiento=fn_date, direccion=row[4], 
-                                            telefono=row[5], email=row[6], id_curso=row[7]))
-            return estudiantes_obj
-        except sqlite3.Error as e:
-            print(f"Error en obtener_por_id_curso: {e}")
-            return None
-        finally:
-            if conn:
-                conn.close()
+
+        sql = "SELECT * FROM estudiante WHERE id_curso=?"
+        valores = (id_curso,)
+        cursor.execute(sql, valores)
+        resultado = cursor.fetchall()
+        conn.close()
+        return resultado
     
     @staticmethod
-    def obtener_nombre_completo(id_estudiante: int) -> str | None:
-        """ Obtiene nombre completo de un estudiante por su ID. """
+    def obtener_nombre_completo(id_estudiante: int) -> str:
+        """Obtiene nombre completo de un estudiante por su ID"""
         conn, cursor = conectar_db()
-        if not conn:
-            return None
         try:
             cursor.execute(
                 "SELECT nombre, apellido FROM estudiante WHERE id_estudiante = ?",
                 (id_estudiante,)
             )
-            resultado = cursor.fetchone()
-            if resultado:
+            if resultado := cursor.fetchone():
                 return f"{resultado[0]} {resultado[1]}"
             return None
-        except sqlite3.Error as e:
-            print(f"Error en obtener_nombre_completo de estudiante: {e}")
-            return None
         finally:
-            if conn:
-                conn.close()
-
-    @staticmethod
-    def obtener_por_id(id_estudiante: int):
-        """ Obtiene un estudiante por su ID. Retorna un objeto Estudiante o None. """
-        conn, cursor = conectar_db()
-        if not conn:
-            return None
-        try:
-            cursor.execute("SELECT id_estudiante, nombre, apellido, fecha_nacimiento, direccion, telefono, email, id_curso FROM estudiante WHERE id_estudiante = ?", (id_estudiante,))
-            row = cursor.fetchone()
-            if row:
-                fn_date = date.fromisoformat(row[3]) if row[3] else None
-                return Estudiante(id_estudiante=row[0], nombre=row[1], apellido=row[2], 
-                                  fecha_nacimiento=fn_date, direccion=row[4], 
-                                  telefono=row[5], email=row[6], id_curso=row[7])
-            return None
-        except sqlite3.Error as e:
-            print(f"Error al obtener estudiante por ID: {e}")
-            return None
-        finally:
-            if conn:
-                conn.close()
+            conn.close()
 
 
 class Materia:
@@ -805,122 +605,58 @@ class Materia:
         self.descripcion = descripcion
 
     @staticmethod
-    def obtener_nombre_materia(id_materia: int):
+    def obtener_nombre_materia(id_materia):
         """
         Retorna el nombre de la materia dado su ID.
+
         :param id_materia: ID de la materia
-        :return: Nombre de la materia o None si no existe o hay error.
+        :return: Nombre de la materia o None si no existe
         """
         conn, cursor = conectar_db()
-        if not conn:
-            return None
+        
         try:
             query = "SELECT nombre_materia FROM materia WHERE id_materia = ?"
             cursor.execute(query, (id_materia,))
             resultado = cursor.fetchone()
             return resultado[0] if resultado else None
-        except sqlite3.Error as e:
-            print(f"Error en obtener_nombre_materia: {e}")
-            return None
         finally:
-            if conn:
-                conn.close()
+            conn.close()
 
-    def guardar_registro(self) -> int | None:
-        """ Guarda la materia actual en la BD. Retorna el ID de la materia insertada o None. """
-        conn, cursor = conectar_db()
-        if not conn:
-            return None
-        try:
-            sql = "INSERT INTO materia (nombre_materia, descripcion) VALUES (?, ?)"
-            valores = (self.nombre, self.descripcion)
-            cursor.execute(sql, valores)
-            conn.commit()
-            self.id_materia = cursor.lastrowid
-            return self.id_materia
-        except sqlite3.Error as e:
-            print(f"Error al guardar materia: {e}")
-            return None
-        finally:
-            if conn:
-                conn.close()
+    def guardar_registro(self):
+        conn, cursor = conectar_db()#La funcion retorna dos instancias
+        sql = "INSERT INTO materia (nombre_materia,descripcion) VALUES (?, ?)"
+        valores = (self.nombre,self.descripcion)
+        cursor.execute(sql,valores)
+        conn.commit()
+        conn.close()
 
-    def actualizar_registro(self) -> bool:
-        """ Actualiza la materia actual en la BD. """
+    def actualizar_registro(self):
         if self.id_materia is None:
-            raise ValueError("ID de materia requerido para actualizar")
+            raise ValueError("ID requerido para actualizar")
         conn, cursor = conectar_db()
-        if not conn:
-            return False
-        try:
-            sql = "UPDATE materia SET nombre_materia = ?, descripcion = ? WHERE id_materia = ?"
-            valores = (self.nombre, self.descripcion, self.id_materia)
-            cursor.execute(sql, valores)
-            conn.commit()
-            return cursor.rowcount > 0
-        except sqlite3.Error as e:
-            print(f"Error al actualizar materia: {e}")
-            return False
-        finally:
-            if conn:
-                conn.close()
+        sql = "UPDATE materia SET nombre_materia = ?, descripcion = ? WHERE id_materia = ?"
+        valores = (self.nombre, self.descripcion, self.id_materia)
+
+        cursor.execute(sql,valores)
+        conn.commit()
+        conn.close()
     
-    def eliminar_registro(self) -> bool:
-        """ Elimina la materia actual de la BD. """
+    def eliminar_registro(self):
         if self.id_materia is None:
-            raise ValueError("ID de materia requerido para eliminar")
+            raise ValueError("ID requerido para eliminar")
         conn, cursor = conectar_db()
-        if not conn:
-            return False
-        try:
-            cursor.execute("DELETE FROM materia WHERE id_materia = ?", (self.id_materia,))
-            conn.commit()
-            return cursor.rowcount > 0
-        except sqlite3.Error as e:
-            print(f"Error al eliminar materia: {e}")
-            return False
-        finally:
-            if conn:
-                conn.close()
+        cursor.execute("DELETE FROM materia WHERE id_materia = ?", (self.id_materia,))
+        conn.commit()
+        conn.close()
 
     @staticmethod
     def obtener_todos():
-        """ Obtiene todas las materias. Retorna lista de objetos Materia o None. """
         conn, cursor = conectar_db()
-        if not conn:
-            return None
-        materias_obj = []
-        try:
-            cursor.execute("SELECT id_materia, nombre_materia, descripcion FROM materia")
-            datos = cursor.fetchall()
-            for row in datos:
-                materias_obj.append(Materia(id_materia=row[0], nombre=row[1], descripcion=row[2]))
-            return materias_obj
-        except sqlite3.Error as e:
-            print(f"Error al obtener todas las materias: {e}")
-            return None
-        finally:
-            if conn:
-                conn.close()
-    
-    @staticmethod
-    def obtener_por_id(id_materia: int):
-        """ Obtiene una materia por su ID. Retorna un objeto Materia o None. """
-        conn, cursor = conectar_db()
-        if not conn:
-            return None
-        try:
-            cursor.execute("SELECT id_materia, nombre_materia, descripcion FROM materia WHERE id_materia = ?", (id_materia,))
-            row = cursor.fetchone()
-            if row:
-                return Materia(id_materia=row[0], nombre=row[1], descripcion=row[2])
-            return None
-        except sqlite3.Error as e:
-            print(f"Error al obtener materia por ID: {e}")
-            return None
-        finally:
-            if conn:
-                conn.close()
+        cursor.execute("SELECT * FROM materia")
+        datos = cursor.fetchall()
+        conn.close()
+
+        return datos
 
 
 class Curso:
@@ -929,98 +665,47 @@ class Curso:
         self.nombre = nombre
         self.descripcion = descripcion
 
-    def guardar_registro(self) -> int | None:
-        """ Guarda el curso actual en la BD. Retorna el ID del curso insertado o None. """
+    def guardar_registro(self):
         conn, cursor = conectar_db()
-        if not conn:
-            return None
-        try:
-            sql = "INSERT INTO curso (nombre, descripcion) VALUES (?, ?)"
-            valores = (self.nombre, self.descripcion)
-            cursor.execute(sql, valores)
-            conn.commit()
-            self.id_curso = cursor.lastrowid
-            return self.id_curso
-        except sqlite3.Error as e:
-            print(f"Error al guardar curso: {e}")
-            return None
-        finally:
-            if conn:
-                conn.close()
+        sql = "INSERT INTO curso (nombre, descripcion) VALUES (?, ?)"
+        valores = (self.nombre, self.descripcion)
+        cursor.execute(sql, valores)
+        conn.commit()
+        conn.close()
 
-    def actualizar_registro(self) -> bool:
-        """ Actualiza el curso actual en la BD. """
+    def actualizar_registro(self):
         if self.id_curso is None:
-            raise ValueError("ID de curso requerido para actualizar")
+            raise ValueError("ID requerido para actualizar")
         conn, cursor = conectar_db()
-        if not conn:
-            return False
-        try:
-            sql = "UPDATE curso SET nombre = ?, descripcion = ? WHERE id_curso = ?"
-            valores = (self.nombre, self.descripcion, self.id_curso)
-            cursor.execute(sql, valores)
-            conn.commit()
-            return cursor.rowcount > 0
-        except sqlite3.Error as e:
-            print(f"Error al actualizar curso: {e}")
-            return False
-        finally:
-            if conn:
-                conn.close()
+        sql = "UPDATE curso SET nombre = ?, descripcion = ? WHERE id_curso = ?"
+        valores = (self.nombre, self.descripcion, self.id_curso)
+        cursor.execute(sql, valores)
+        conn.commit()
+        conn.close()
 
-    def eliminar_registro(self) -> bool:
-        """ Elimina el curso actual de la BD. """
+    def eliminar_registro(self):
         if self.id_curso is None:
-            raise ValueError("ID de curso requerido para eliminar")
+            raise ValueError("ID requerido para eliminar")
         conn, cursor = conectar_db()
-        if not conn:
-            return False
-        try:
-            cursor.execute("DELETE FROM curso WHERE id_curso = ?", (self.id_curso,))
-            conn.commit()
-            return cursor.rowcount > 0
-        except sqlite3.Error as e:
-            print(f"Error al eliminar curso: {e}")
-            return False
-        finally:
-            if conn:
-                conn.close()
+        cursor.execute("DELETE FROM curso WHERE id_curso = ?", (self.id_curso,))
+        conn.commit()
+        conn.close()
 
     @staticmethod
     def obtener_todos():
-        """ Obtiene todos los cursos. Retorna lista de objetos Curso o None. """
         conn, cursor = conectar_db()
-        if not conn:
-            return None
-        cursos_obj = []
-        try:
-            cursor.execute("SELECT id_curso, nombre, descripcion FROM curso")
-            rows = cursor.fetchall()
-            for row in rows:
-                cursos_obj.append(Curso(id_curso=row[0], nombre=row[1], descripcion=row[2]))
-            return rows
-        except sqlite3.Error as e:
-            print(f"Error al obtener todos los cursos: {e}")
-            return None
-        finally:
-            if conn:
-                conn.close()
-
+        cursor.execute("SELECT id_curso, nombre, descripcion FROM curso")
+        rows = cursor.fetchall()
+        conn.close()
+        return rows
+    
     @staticmethod
-    def obtener_por_id(id_curso: int):
-        """ Obtiene un curso por su ID. Retorna un objeto Curso o None. """
+    def obtener_por_id(id_curso):
         conn, cursor = conectar_db()
-        if not conn:
-            return None
-        try:
-            cursor.execute("SELECT id_curso, nombre, descripcion FROM curso WHERE id_curso = ?", (id_curso,))
-            row = cursor.fetchone()
-            if row:
-                return Curso(id_curso=row[0], nombre=row[1], descripcion=row[2])
-            return None
-        except sqlite3.Error as e:
-            print(f"Error al obtener curso por ID: {e}")
-            return None
-        finally:
-            if conn:
-                conn.close()
+        cursor.execute("SELECT id_curso, nombre, descripcion FROM curso WHERE id_curso = ?", (id_curso,))
+        row = cursor.fetchone()
+        conn.close()
+        if row:
+            return Curso(id_curso=row[0], nombre=row[1], descripcion=row[2])
+        return None
+

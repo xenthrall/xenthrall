@@ -2,6 +2,17 @@ import sqlite3
 from models.conexion_sqlite import conectar_db
 from datetime import date # Asegúrate de que date esté importado
 
+import sys
+import os
+
+def resource_path(relative_path):
+    try:
+        # PyInstaller usa una carpeta temporal
+        base_path = sys._MEIPASS
+    except AttributeError:
+        base_path = os.path.abspath(".")
+    return os.path.join(base_path, relative_path)
+
 
 class Reportes:
     """
@@ -541,11 +552,12 @@ class Estudiante:
             conn.commit()
             conn.close()
 
-    def eliminar_registro(self):
+    @staticmethod
+    def eliminar_registro(id_estudiante):
         conn, cursor = conectar_db()
         if conn:
             sql = "DELETE FROM estudiante WHERE id_estudiante=?"
-            valores = (self.id_estudiante,)
+            valores = (id_estudiante,)
             cursor.execute(sql, valores)
             conn.commit()
             conn.close()

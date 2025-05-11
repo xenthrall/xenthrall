@@ -99,7 +99,7 @@ def main(page: ft.Page):
             
             image_control = app_state.get("acerca_de_image_control")
             if image_control:
-                image_control.scale = ft.transform.Scale(1.0)
+                image_control.scale = ft.Scale(1.0)
                 # No actualizar page aquí, el control ya no es visible directamente.
             
             app_state["acerca_de_image_control"] = None

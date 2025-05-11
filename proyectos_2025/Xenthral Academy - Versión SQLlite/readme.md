@@ -23,7 +23,7 @@ git https://github.com/xenthrall/xenthrall.git
 cd xenthrall-academy
 
 2. Instala las dependencias
-pip install flet
+pip install flet==0.28.2
 
 
 3. Ejecuta la aplicación

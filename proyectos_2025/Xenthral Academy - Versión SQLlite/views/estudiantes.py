@@ -70,7 +70,7 @@ class TablaEstudiantes:
                             ft.IconButton(
                                 icon=ft.Icons.DELETE,
                                 tooltip="Eliminar Estudiante",
-                                on_click=lambda ev, id=e[0], *args: self.eliminar_estudiante(ev, id),
+                                on_click=lambda ev, id=e[0] : self.eliminar_estudiante(ev, id),
                             )
                         )
                     ]
@@ -89,13 +89,12 @@ class TablaEstudiantes:
         self.cerrar_dialogo(e)
         self.actualizar_tabla()  # Llamada para actualizar la tabla
 
-    def eliminar_estudiante(self, e, id,nombre,apellido,fecha_nacimiento,direccion,telefono,email,id_curso):
+    def eliminar_estudiante(self, e, id):
         """
         Elimina al estudiante de la base de datos y actualiza la tabla.
 
         """
-        estudiante = Estudiante(nombre, apellido, id_curso, fecha_nacimiento, direccion, telefono, email, id_estudiante = id)
-        estudiante.eliminar_registro()
+        Estudiante.eliminar_registro(id)
         self.actualizar_tabla()  # Llamada para actualizar la tabla
 
     def seleccionar_estudiante(self, e, id,nombre,apellido,fecha_nacimiento,direccion,telefono,email,id_curso):
@@ -150,7 +149,7 @@ class TablaEstudiantes:
         content=ft.Container(
             width=800,
             padding=ft.padding.all(24),
-            bgcolor=ft.colors.WHITE,
+            bgcolor=ft.Colors.WHITE,
             alignment=ft.alignment.center,
             content=ft.Column(
                 alignment=ft.MainAxisAlignment.CENTER,
@@ -302,7 +301,7 @@ def formulario_registro(page: ft.Page, tabla_materias: TablaEstudiantes):
 
     
 
-    estado_registro = ft.Text(value="", color=ft.colors.GREEN_600)
+    estado_registro = ft.Text(value="", color=ft.Colors.GREEN_600)
 
     
     
@@ -312,7 +311,7 @@ def formulario_registro(page: ft.Page, tabla_materias: TablaEstudiantes):
         """Guarda la nueva materia en la base de datos y actualiza la tabla."""
         if not id_curso:
             estado_registro.value = "Selecciona un curso"
-            estado_registro.color = ft.colors.RED
+            estado_registro.color = ft.Colors.RED
             page.update()
             await asyncio.sleep(2)
 
@@ -321,7 +320,7 @@ def formulario_registro(page: ft.Page, tabla_materias: TablaEstudiantes):
             if not nombre.value.strip() or not apellido.value.strip():
                 print(id_curso)
                 estado_registro.value = "Los campos nombres y apellidos son obligatorios"
-                estado_registro.color = ft.colors.RED
+                estado_registro.color = ft.Colors.RED
                 page.update()
                 await asyncio.sleep(2)
                 estado_registro.value = ""
@@ -336,7 +335,7 @@ def formulario_registro(page: ft.Page, tabla_materias: TablaEstudiantes):
                     nuevo_estudiante.guardar_registro()
                     tabla_materias.actualizar_tabla()
                     estado_registro.value = "Estudiante registrado exitosamente"
-                    estado_registro.color = ft.colors.GREEN
+                    estado_registro.color = ft.Colors.GREEN
                     page.update()
 
                     await asyncio.sleep(2)
@@ -366,7 +365,7 @@ def formulario_registro(page: ft.Page, tabla_materias: TablaEstudiantes):
     # Botón de guardar
     boton_guardar = ft.ElevatedButton(
         text="Guardar",
-        icon=ft.icons.SAVE,
+        icon=ft.Icons.SAVE,
         style=ft.ButtonStyle(shape=ft.RoundedRectangleBorder(radius=8)),
         on_click=insertar_dato,
     )
@@ -378,7 +377,7 @@ def formulario_registro(page: ft.Page, tabla_materias: TablaEstudiantes):
         content=ft.Container(
             width=800,
             padding=ft.padding.all(24),
-            bgcolor=ft.colors.WHITE,
+            bgcolor=ft.Colors.WHITE,
             alignment=ft.alignment.center,
             content=ft.Column(
                 alignment=ft.MainAxisAlignment.CENTER,
@@ -427,7 +426,7 @@ def estudiantes(page: ft.Page):
         tabs=[
             ft.Tab(
                 text="Registrar",
-                icon=ft.icons.NOTE_ADD,
+                icon=ft.Icons.NOTE_ADD,
                 content=ft.Container(
                     content=formulario_registro(page, tabla_estudiantes),
                     alignment=ft.alignment.center,
@@ -436,7 +435,7 @@ def estudiantes(page: ft.Page):
             ),
             ft.Tab(
                 text="Ver Estudiantes",
-                icon=ft.icons.LIST_ALT,
+                icon=ft.Icons.LIST_ALT,
                 content=ft.Container(
                     content=ft.Column([
                     auto2,

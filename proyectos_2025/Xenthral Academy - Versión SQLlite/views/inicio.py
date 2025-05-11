@@ -1,8 +1,10 @@
 import flet as ft
+from models.database import resource_path
+
 
 def inicio():
     logo = ft.Image(
-        src="assets/logo_xenthrall.png",
+        src=resource_path("assets/logo_xenthrall.png"),
         width=200,
         height=200,
         border_radius=ft.border_radius.all(100),
@@ -13,7 +15,7 @@ def inicio():
         size=30,
         weight=ft.FontWeight.BOLD,
         text_align=ft.TextAlign.CENTER,
-        color=ft.colors.BLUE_GREY_900,
+        color=ft.Colors.BLUE_GREY_900,
     )
 
     column = ft.Column(
@@ -26,7 +28,7 @@ def inicio():
     view = ft.Card(
         content=ft.Container(
             content=column,
-            border=ft.border.all(1, ft.colors.BLUE_GREY_200),
+            border=ft.border.all(1, ft.Colors.BLUE_GREY_200),
             padding=40,
             width=400,
             height=400,

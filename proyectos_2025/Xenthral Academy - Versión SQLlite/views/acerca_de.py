@@ -1,6 +1,9 @@
 import flet as ft
 import asyncio
 
+
+from models.database import resource_path
+
 # La definición de la función ACEPTA 'page' y 'app_state'
 def acerca_de_view(page: ft.Page, app_state: dict):
     """
@@ -11,11 +14,11 @@ def acerca_de_view(page: ft.Page, app_state: dict):
     # Imagen animada. Su referencia se guardará en app_state.
     # Asegúrate de que 'assets/logo.png' exista en tu directorio de assets.
     image = ft.Image(
-        src="assets/logo.png",
+        src=resource_path("assets/logo.png"),
         width=200,
         height=200,
         fit=ft.ImageFit.CONTAIN,
-        scale=ft.transform.Scale(1.0), # Escala inicial
+        scale=ft.Scale(1.0), # Escala inicial
         animate_scale=ft.Animation(300, curve=ft.AnimationCurve.EASE_IN_OUT),
     )
     # Guardar la referencia de la imagen en el estado global para que dashboard.py pueda acceder a ella
@@ -31,7 +34,7 @@ def acerca_de_view(page: ft.Page, app_state: dict):
                 if not current_image_control: 
                     break 
                 
-                current_image_control.scale = ft.transform.Scale(1.15)
+                current_image_control.scale = ft.Scale(1.15)
                 # Actualizar solo si el control de imagen tiene una página (está visible)
                 if page and current_image_control.page: 
                     page.update(current_image_control)
@@ -45,7 +48,7 @@ def acerca_de_view(page: ft.Page, app_state: dict):
                 if not current_image_control:
                     break
 
-                current_image_control.scale = ft.transform.Scale(1.0)
+                current_image_control.scale = ft.Scale(1.0)
                 if page and current_image_control.page:
                     page.update(current_image_control)
                 await asyncio.sleep(0.3)
@@ -56,7 +59,7 @@ def acerca_de_view(page: ft.Page, app_state: dict):
             # Asegurar que la imagen siempre vuelva a su escala original.
             final_image_control = app_state.get("acerca_de_image_control")
             if final_image_control:
-                final_image_control.scale = ft.transform.Scale(1.0)
+                final_image_control.scale = ft.Scale(1.0)
                 if page and final_image_control.page:
                     try:
                         page.update(final_image_control)
@@ -110,7 +113,7 @@ def acerca_de_view(page: ft.Page, app_state: dict):
             # Si no había tarea o ya terminó, resetear explícitamente la imagen por si acaso.
             current_image_control = app_state.get("acerca_de_image_control")
             if current_image_control and current_image_control.page:
-                current_image_control.scale = ft.transform.Scale(1.0)
+                current_image_control.scale = ft.Scale(1.0)
                 page.update(current_image_control)
         
         # Actualizar estado de los botones (si existen y están en la página)
@@ -145,7 +148,7 @@ def acerca_de_view(page: ft.Page, app_state: dict):
         play_button.disabled = False
         pause_button.disabled = True
         # Asegurar que la imagen esté reseteada si no hay música al entrar a la vista
-        image.scale = ft.transform.Scale(1.0) 
+        image.scale = ft.Scale(1.0) 
 
     # Contenido de la vista "Acerca de"
     music = ft.Container(

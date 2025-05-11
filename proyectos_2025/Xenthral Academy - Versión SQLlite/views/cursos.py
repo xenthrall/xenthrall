@@ -123,13 +123,13 @@ def formulario_registro(page: ft.Page,tabla_cursos):
     # Campos del formulario
     nombre = ft.TextField(label="Nombre del curso")
     descripcion = ft.TextField(label="Descripción")
-    estado_registro = ft.Text(value="", color=ft.colors.GREEN_600)
+    estado_registro = ft.Text(value="", color=ft.Colors.GREEN_600)
 
     # Función para insertar curso
     async def insertar_dato(e):
         if not nombre.value.strip() or not descripcion.value.strip():
             estado_registro.value = "Todos los campos son obligatorios"
-            estado_registro.color = ft.colors.RED
+            estado_registro.color = ft.Colors.RED
             page.update()
             await asyncio.sleep(2)
             estado_registro.value = ""
@@ -138,7 +138,7 @@ def formulario_registro(page: ft.Page,tabla_cursos):
                 curso = Curso(nombre.value.strip(), descripcion.value.strip())
                 curso.guardar_registro()
                 estado_registro.value = "Curso registrado exitosamente"
-                estado_registro.color = ft.colors.GREEN
+                estado_registro.color = ft.Colors.GREEN
                 page.update()
                 
                 tabla_cursos.actualizar_tabla()
@@ -155,7 +155,7 @@ def formulario_registro(page: ft.Page,tabla_cursos):
     # Botón de guardar
     boton_guardar = ft.ElevatedButton(
         text="Guardar",
-        icon=ft.icons.SAVE,
+        icon=ft.Icons.SAVE,
         style=ft.ButtonStyle(shape=ft.RoundedRectangleBorder(radius=8)),
         on_click=insertar_dato,
     )
@@ -167,7 +167,7 @@ def formulario_registro(page: ft.Page,tabla_cursos):
         content=ft.Container(
             width=400,
             padding=ft.padding.all(24),
-            bgcolor=ft.colors.WHITE,
+            bgcolor=ft.Colors.WHITE,
             alignment=ft.alignment.center,
             content=ft.Column(
                 alignment=ft.MainAxisAlignment.CENTER,
@@ -197,7 +197,7 @@ def cursos(page: ft.Page):
         tabs=[
             ft.Tab(
                 text="Registrar",
-                icon=ft.icons.NOTE_ADD,
+                icon=ft.Icons.NOTE_ADD,
                 content=ft.Container(
                     content=formulario_registro(page,tabla_cursos),
                     alignment=ft.alignment.center,
@@ -206,7 +206,7 @@ def cursos(page: ft.Page):
             ),
             ft.Tab(
                 text="Ver cursos",
-                icon=ft.icons.LIST_ALT,
+                icon=ft.Icons.LIST_ALT,
                 content=ft.Container(
                     content=tabla_cursos.construir_tabla(),
                     alignment=ft.alignment.center,

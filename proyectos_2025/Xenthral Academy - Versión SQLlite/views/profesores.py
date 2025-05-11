@@ -115,7 +115,7 @@ class TablaEstudiantes:
         content=ft.Container(
             width=800,
             padding=ft.padding.all(24),
-            bgcolor=ft.colors.WHITE,
+            bgcolor=ft.Colors.WHITE,
             alignment=ft.alignment.center,
             content=ft.Column(
                 alignment=ft.MainAxisAlignment.CENTER,
@@ -193,7 +193,7 @@ def formulario_registro(page: ft.Page, tabla_materias: TablaEstudiantes):
 
     
 
-    estado_registro = ft.Text(value="", color=ft.colors.GREEN_600)
+    estado_registro = ft.Text(value="", color=ft.Colors.GREEN_600)
 
     
     
@@ -204,7 +204,7 @@ def formulario_registro(page: ft.Page, tabla_materias: TablaEstudiantes):
         
         if not nombre.value.strip() or not apellido.value.strip():
                 estado_registro.value = "Los campos nombres y apellidos son obligatorios"
-                estado_registro.color = ft.colors.RED
+                estado_registro.color = ft.Colors.RED
                 page.update()
                 await asyncio.sleep(2)
                 estado_registro.value = ""
@@ -215,7 +215,7 @@ def formulario_registro(page: ft.Page, tabla_materias: TablaEstudiantes):
                     nuevo_estudiante.guardar_registro()
                     tabla_materias.actualizar_tabla()
                     estado_registro.value = "Profesor registrado exitosamente"
-                    estado_registro.color = ft.colors.GREEN
+                    estado_registro.color = ft.Colors.GREEN
                     page.update()
 
                     await asyncio.sleep(2)
@@ -240,7 +240,7 @@ def formulario_registro(page: ft.Page, tabla_materias: TablaEstudiantes):
     # Botón de guardar
     boton_guardar = ft.ElevatedButton(
         text="Guardar",
-        icon=ft.icons.SAVE,
+        icon=ft.Icons.SAVE,
         style=ft.ButtonStyle(shape=ft.RoundedRectangleBorder(radius=8)),
         on_click=insertar_dato,
     )
@@ -252,7 +252,7 @@ def formulario_registro(page: ft.Page, tabla_materias: TablaEstudiantes):
         content=ft.Container(
             width=800,
             padding=ft.padding.all(24),
-            bgcolor=ft.colors.WHITE,
+            bgcolor=ft.Colors.WHITE,
             alignment=ft.alignment.center,
             content=ft.Column(
                 alignment=ft.MainAxisAlignment.CENTER,
@@ -278,7 +278,7 @@ valor_id_profesor = None
 valor_id_materia = None
 
 #Informacion del profesor y materia selccionados
-infromacion_profesor = ft.Text(f"Profesor: {valor_id_profesor}", expand=1,size=16,color=ft.colors.BLUE_900)
+infromacion_profesor = ft.Text(f"Profesor: {valor_id_profesor}", expand=1,size=16,color=ft.Colors.BLUE_900)
 infromacion_materia = ft.Text(f"Materia: {valor_id_materia}", expand=1,size=16, color=ft.Colors.BLUE_900)
 
 
@@ -568,7 +568,7 @@ def profesores(page: ft.Page):
         tabs=[
             ft.Tab(
                 text="Registrar",
-                icon=ft.icons.NOTE_ADD,
+                icon=ft.Icons.NOTE_ADD,
                 content=ft.Container(
                     content=formulario_registro(page, tabla_estudiantes),
                     alignment=ft.alignment.center,
@@ -577,7 +577,7 @@ def profesores(page: ft.Page):
             ),
             ft.Tab(
                 text="Ver Profesores",
-                icon=ft.icons.LIST_ALT,
+                icon=ft.Icons.LIST_ALT,
                 content=ft.Container(
                     content=tabla_estudiantes.construir_tabla(),
                     alignment=ft.alignment.center,
@@ -587,7 +587,7 @@ def profesores(page: ft.Page):
 
             ft.Tab(
                 text="Asignar Materias",
-                icon=ft.icons.BOOK,
+                icon=ft.Icons.BOOK,
                 content=ft.Container(
                     content=modulo_asignar_materias(page),
                     alignment=ft.alignment.center,

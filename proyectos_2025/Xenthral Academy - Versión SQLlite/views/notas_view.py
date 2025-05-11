@@ -34,10 +34,10 @@ def notas_view(page: ft.Page):
             nombre_display_control.color = ft.Colors.RED_ACCENT_700
 
     # --- Botones de acción ---
-    btn_registrar = ft.ElevatedButton(text="Registrar", icon=ft.icons.ADD_CIRCLE_OUTLINE, disabled=True) # Inicia deshabilitado
-    btn_listar = ft.ElevatedButton(text="Listar Notas Est.", icon=ft.icons.LIST_ALT)
-    btn_actualizar = ft.ElevatedButton(text="Actualizar Nota", icon=ft.icons.EDIT)
-    btn_eliminar = ft.ElevatedButton(text="Eliminar Nota", icon=ft.icons.DELETE_OUTLINE, color=ft.Colors.WHITE, bgcolor=ft.Colors.RED_ACCENT_700)
+    btn_registrar = ft.ElevatedButton(text="Registrar", icon=ft.Icons.ADD_CIRCLE_OUTLINE, disabled=True) # Inicia deshabilitado
+    btn_listar = ft.ElevatedButton(text="Listar Notas Est.", icon=ft.Icons.LIST_ALT)
+    btn_actualizar = ft.ElevatedButton(text="Actualizar Nota", icon=ft.Icons.EDIT)
+    btn_eliminar = ft.ElevatedButton(text="Eliminar Nota", icon=ft.Icons.DELETE_OUTLINE, color=ft.Colors.WHITE, bgcolor=ft.Colors.RED_ACCENT_700)
 
     # --- Función para actualizar el estado del botón Registrar ---
     def actualizar_estado_boton_registrar():

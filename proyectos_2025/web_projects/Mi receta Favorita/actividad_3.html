@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actividad 3</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        table {
+            width: 50%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        img {
+            max-width: 100px;
+            height: auto;
+            display: block;
+            margin-bottom: 20px;
+        }
+        form {
+            max-width: 50%;
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="text"], input[type="email"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        ul {
+            list-style-type: disc;
+            padding-left: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Bienvenido a Mi Página Web</h1>
+
+    <h2>Imagen</h2>
+
+    <img src="mutples.png" alt="Imagen">
+
+    <h2>Enlaces</h2>
+    <ul>
+        <li><a href="https://www.google.com" target="_blank">Visita Google</a></li>
+        <li><a href="https://www.wikipedia.org" target="_blank">Explorar Wikipedia</a></li>
+        <li><a href="#formulario-simple">Ir al Formulario</a></li> 
+    </ul>
+
+    <h2>Tabla</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Encabezado 1</th>
+                <th>Encabezado 2</th>
+                <th>Encabezado 3</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Dato 1A</td>
+                <td>Dato 2A</td>
+                <td>Dato 3A</td>
+            </tr>
+            <tr>
+                <td>Dato 1B</td>
+                <td>Dato 2B</td>
+                <td>Dato 3B</td>
+            </tr>
+            <tr>
+                <td>Dato 1C</td>
+                <td>Dato 2C</td>
+                <td>Dato 3C</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2 id="formulario-simple">Formulario</h2>
+    <form action="#" method="post">
+        <div>
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" name="nombre" required>
+        </div>
+        <div>
+            <label for="email">Correo Electrónico:</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+        <div>
+            <label for="mensaje">Mensaje:</label>
+            <textarea id="mensaje" name="mensaje" rows="4" style="width:50%; box-sizing: border-box;"></textarea>
+        </div>
+        <button type="submit">Enviar</button>
+    </form>
+
+</body>
+</html>

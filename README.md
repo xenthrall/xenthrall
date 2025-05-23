@@ -1,49 +1,41 @@
-# Xenthral
+# 👋 ¡Hola! Soy Jhon Jairo - Desarrollador en Ascenso desde Colombia 🇨🇴
 
-Welcome to **Xenthral**, a personal repository that serves as a collection of apps and projects I've built with Python and other technologies throughout my learning journey.
-
-The main goal of this repository is twofold:
-1. To document my yearly progress as a developer.
-2. To provide open, practical examples for others who want to learn from real projects.
+¡Bienvenido/a a mi rincón en GitHub! Soy un entusiasta de la tecnología con base en Colombia, y actualmente estoy sumergido de lleno en la mejora continua de mis habilidades y en la creación de soluciones innovadoras.
 
 ---
 
-## 🗂 Repository Structure
+## 🚀 Mi Arsenal de Habilidades
 
-This repository is organized by **year-based folders**, each containing the projects I build during that specific year.
+Cuento con una base sólida y una pasión por:
 
-```
-xenthral/
-├── proyectos_2025/
-│ ├── xenthrall-academy/
-│ └── other-project/
-├── proyectos_2026/
-│ └── (future projects)
-└── README.md
-```
-- `proyectos_2025/` contains all my projects created in 2025.
-- When 2026 arrives, a new folder `proyectos_2026/` will be created for that year's projects, and so on.
-
-Each project will include its own README file explaining how to run it, what technologies it uses, and what you can learn from it.
+* **🐍 Python con Sabor a Café:**
+    * **Automatización Inteligente:** Transformo procesos manuales en flujos de trabajo eficientes. ¡Si se puede scriptar, se puede automatizar!
+    * **Desarrollo de Herramientas y Apps de Escritorio:** Construyo aplicaciones robustas y a medida que resuelven problemas reales.
+* **🗄️ Arquitecto de Datos:**
+    * **Bases de Datos Relacionales (MySQL, SQLite):** Diseño, implemento y gestiono bases de datos optimizadas y confiables.
+* **🎨 Interfaces que Conectan:**
+    * **Flet (Python + Flutter):** Doy vida a interfaces de usuario modernas e interactivas utilizando Flet, un framework con un potencial enorme que fusiona la simplicidad de Python con el poder de Flutter.
+* **🗣️ Comunicación sin Fronteras:**
+    * **Inglés (Nivel B1):** Listo para colaborar y comunicarme en equipos globales.
 
 ---
 
-## 🤝 Contribution & Learning
+## ✨ Mi Proyecto Estrella en Incubación: "Cafe del Tiempo" 🕰️☕
 
-All projects are open for anyone to explore, learn from, or contribute to.
+Actualmente, estoy dedicando corazón y código a un proyecto muy especial (aún en modo sigiloso, ¡pero no por mucho tiempo!): **Cafe del Tiempo**.
 
-If you're learning Python, building GUIs, working with databases, or just curious about how small apps are structured, feel free to browse the folders and read the documentation inside each one.
-
----
-
-## 🚧 Projects in Progress
-
-This repository is updated over time. You might find some projects in progress, experimental ideas, or even prototypes that evolve into more complete applications.
+Esta será una **aplicación de escritorio GRATUITA**, desarrollada bajo mi marca personal **Xenthrall**, diseñada para empoderar a las **cafeterías**. Mi objetivo es ofrecerles una herramienta moderna, intuitiva y con funcionalidades de nivel profesional para que gestionen sus negocios de manera eficiente y eleven la calidad de su servicio. ¡Tengo la firme convicción de que "Cafe del Tiempo" será un aporte valioso para la comunidad cafetera!
 
 ---
 
-## 📬 Feedback
+## 🎯 Mirando Hacia el Futuro: Evolución a Full-Stack
 
-If you have any questions, suggestions, or want to collaborate, feel free to open an issue or reach out.
+Mi viaje en el desarrollo apenas comienza. Mis próximos grandes pasos están enfocados en expandir mi stack y convertirme en un desarrollador **Full-Stack**, dominando tecnologías clave como:
 
-Thanks for visiting! 🌱
+* **React**
+* **JavaScript**
+* ¡Y todas las herramientas necesarias para construir experiencias web completas e impactantes!
+
+---
+
+¡Gracias por pasarte por mi perfil! Siempre estoy abierto a aprender, colaborar y crear cosas asombrosas. ¡Conectemos! 🚀

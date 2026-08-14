@@ -4,9 +4,9 @@
 
 # 👋 Hola, soy Jhon Tequia
 
-### Software Developer · Laravel · PHP · Open Source
+### Software Developer · PHP · Python · Software Architecture
 
-Construyendo software escalable, explorando nuevas tecnologías y transformando ideas en aplicaciones reales.
+Construyendo software empresarial, investigando arquitecturas escalables y explorando nuevas tecnologías para transformar ideas en aplicaciones reales.
 
 <p>
 
@@ -14,7 +14,7 @@ Construyendo software escalable, explorando nuevas tecnologías y transformando 
 <img src="https://img.shields.io/badge/GitHub-@xenthrall-181717?style=for-the-badge&logo=github" />
 </a>
 
-<a href="https://tequia.dev">
+<a href="https://hello.tequia.dev">
 <img src="https://img.shields.io/badge/Portfolio-tequia.dev-2563eb?style=for-the-badge" />
 </a>
 
@@ -26,31 +26,56 @@ Construyendo software escalable, explorando nuevas tecnologías y transformando 
 
 ## 👨‍💻 Sobre mí
 
-Soy desarrollador de software de Colombia apasionado por el desarrollo backend y la construcción de aplicaciones modulares.
+Soy desarrollador de software de Colombia, enfocado principalmente en **PHP, Laravel y Python**.
 
-Disfruto aprender constantemente sobre:
+Me interesa especialmente el desarrollo de **aplicaciones empresariales**, la arquitectura de software y la construcción de sistemas modulares, mantenibles y capaces de escalar.
 
-- 🐘 Laravel y PHP
-- 🏗️ Arquitectura de software
-- 🤖 Inteligencia Artificial
-- ☁️ Cloud Computing
-- 🐳 Docker
-- 🐧 Linux
-- ⚡ Automatización de procesos
+Una parte importante de mi aprendizaje está orientada a **investigar y profundizar en arquitecturas escalables a nivel empresarial**, analizando cómo diseñar sistemas que puedan evolucionar desde aplicaciones pequeñas hasta soluciones capaces de soportar mayores volúmenes de usuarios, datos y operaciones.
 
-Mi objetivo es construir software mantenible, escalable y bien diseñado, aplicando buenas prácticas y aprendiendo continuamente.
+Actualmente estoy explorando y profundizando en:
+
+- 🐘 **PHP y Laravel**
+- 🐍 **Python**
+- 🗄️ **PostgreSQL y bases de datos**
+- 🏗️ **Arquitectura de software y sistemas escalables**
+- ☁️ **Cloud Computing y arquitecturas serverless**
+- ⚛️ **Desarrollo frontend**
+- 🤖 **Inteligencia Artificial y LLMs**
+- 🐳 **Docker y containerización**
+- 🐧 **Linux**
+- ⚡ **Automatización de procesos**
+
+Mi objetivo es combinar la construcción de software real con la investigación y experimentación de diferentes enfoques arquitectónicos, buscando comprender no solo **cómo construir una aplicación**, sino también **cómo diseñarla para que pueda evolucionar**.
 
 ---
 
-## 🚀 Proyecto principal
+## 🚀 Proyectos
+
+Actualmente trabajo en diferentes proyectos personales y experimentales.
 
 ### Atlas
 
-**Atlas** es mi plataforma personal de desarrollo.
+Plataforma base y entorno de experimentación para desarrollar aplicaciones con **Laravel**, arquitectura modular y diferentes componentes reutilizables.
 
-Nació como mi portafolio, pero evolucionará hasta convertirse en un ecosistema modular donde desarrollaré aplicaciones, herramientas, experimentos y proyectos open source.
+El proyecto también funciona como espacio para investigar diferentes enfoques de arquitectura, modularidad y diseño de aplicaciones empresariales.
 
-Cada nueva idea tendrá un lugar dentro de Atlas.
+> Proyecto en constante investigación y desarrollo.
+
+### Nexo
+
+Sistema orientado a la gestión de instituciones educativas y sus procesos administrativos.
+
+El proyecto busca explorar la construcción de una aplicación empresarial modular, orientada a resolver procesos reales de gestión educativa.
+
+> Proyecto actualmente en desarrollo.
+
+### Faro
+
+Sistema de gestión para pequeñas empresas, actualmente en etapa inicial de diseño y desarrollo.
+
+El objetivo es que el costo de infraestructura sea **económicamente absurdo de lo bajo**, permitiendo desplegar la solución para pequeñas empresas sin que la infraestructura represente una carga significativa.
+
+Actualmente estoy explorando una arquitectura **frontend estática + Supabase**, buscando minimizar la infraestructura necesaria y los costos operativos.
 
 ---
 
@@ -58,37 +83,45 @@ Cada nueva idea tendrá un lugar dentro de Atlas.
 
 <p>
 
-<img src="https://skillicons.dev/icons?i=php,laravel,postgres,docker,redis,linux,git,github,vscode,tailwind,vue,js" />
+<img src="https://skillicons.dev/icons?i=php,python,laravel,postgres,mysql,docker,redis,linux,git,github,vscode,tailwind,vue,js,ts,react" />
 
 </p>
 
 ---
 
-## 📊 GitHub Stats
+## 📊 GitHub Stats <p align="center"> <a href="https://github.com/xenthrall"> <img height="180em" src="https://github-readme-stats-eight-theta.vercel.app/api?username=xenthrall&show_icons=true&theme=algolia&include_all_commits=true&count_private=true" alt="Estadísticas de GitHub" /> <img height="180em" src="https://github-readme-stats-eight-theta.vercel.app/api/top-langs/?username=xenthrall&layout=compact&langs_count=8&theme=algolia" alt="Lenguajes más usados" /> </a> </p> 
 
-<p align="center">
-  <a href="https://github.com/xenthrall">
-    <img 
-      height="180em" 
-      src="https://github-readme-stats-eight-theta.vercel.app/api?username=xenthrall&show_icons=true&theme=algolia&include_all_commits=true&count_private=true"
-      alt="Estadísticas de GitHub"
-    />
-    <img 
-      height="180em" 
-      src="https://github-readme-stats-eight-theta.vercel.app/api/top-langs/?username=xenthrall&layout=compact&langs_count=8&theme=algolia"
-      alt="Lenguajes más usados"
-    />
-  </a>
-</p>
-
----
 
 ## 📚 Actualmente
 
-- 🚀 Construyendo **Atlas**
-- 🌱 Aprendiendo sobre Inteligencia Artificial y LLMs
-- 💡 Experimentando con arquitecturas modulares
-- 🤝 Contribuyendo y creando proyectos Open Source
+- 🔨 Desarrollando y evolucionando **Atlas**
+- 🎓 Trabajando en **Nexo**, un proyecto de gestión educativa
+- 🏪 Explorando **Faro**, una aplicación de gestión para pequeñas empresas
+- 🐘 Profundizando en **PHP y Laravel**
+- 🐍 Profundizando en **Python**
+- 🗄️ Profundizando en **PostgreSQL y Supabase**
+- ⚛️ Explorando arquitecturas frontend con **React y TypeScript**
+- 🏗️ Investigando **arquitecturas escalables y diseño de sistemas empresariales**
+- 🤖 Aprendiendo sobre **Inteligencia Artificial y LLMs**
+
+---
+
+## 🌱 Áreas de interés
+
+Además del desarrollo de aplicaciones empresariales, me interesa investigar y experimentar con diferentes áreas de la tecnología:
+
+- Arquitectura de software
+- Sistemas distribuidos
+- Arquitecturas escalables
+- Inteligencia Artificial y LLMs
+- Cloud Computing
+- Serverless
+- Bases de datos
+- Automatización
+- Linux
+- Robótica
+- Energías renovables
+- Vehículos eléctricos
 
 ---
 

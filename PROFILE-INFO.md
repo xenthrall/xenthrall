@@ -55,10 +55,24 @@ Sistema de gestión para pequeñas empresas. Objetivo: costo de infraestructura 
 
 ## Preferencias de redacción para el README
 
+- **Estilo actual (desde 2026-08-30): minimalista, cool, misterioso.** Poca info personal expuesta, mucho espacio en blanco, sin bio larga ni listas de "actualmente aprendiendo" ni descripciones de proyectos.
+- Idioma: mezcla — nombre/username y frases cortas en inglés dan mejor el tono "misterioso"; el resto del repo puede seguir en español.
+- Formato: badges minimalistas (shields.io en negro/flat-square), skillicons.dev en tema oscuro sin lista de texto, un typing-effect (readme-typing-svg) con frases crípticas cortas en vez de bio.
+- Proyectos: mencionar solo el nombre (atlas, nexo, faro), sin explicar qué hacen.
+- Sin sección de GitHub stats (visualmente recargada, no encaja con el estilo minimalista) — solo remover si el usuario no pide lo contrario.
+- Frase de cierre actual: *"the best systems are the ones nobody notices."*
+
+> Estilo anterior (más descriptivo/profesional, con bio completa, stack detallado, stats y áreas de interés) queda documentado abajo por si se quiere volver a él o mezclar partes.
+
+<details>
+<summary>Estilo anterior (pre 2026-08-30)</summary>
+
 - Idioma: español.
 - Tono: profesional pero cercano, en primera persona.
-- Formato actual: secciones con emojis como íconos, badges de shields.io, skillicons.dev para el stack, github-readme-stats para estadísticas.
-- Frase de cierre actual: *"Every great application starts with a single idea."*
+- Formato: secciones con emojis como íconos, badges de shields.io, skillicons.dev para el stack, github-readme-stats para estadísticas.
+- Frase de cierre: *"Every great application starts with a single idea."*
+
+</details>
 
 ## Pendiente / por completar
 
@@ -74,3 +88,4 @@ Sistema de gestión para pequeñas empresas. Objetivo: costo de infraestructura 
 ## Historial de cambios relevantes
 
 - 2026-08-30: Creación del archivo, contenido inicial extraído del README.md vigente en ese momento.
+- 2026-08-30: README rediseñado a estilo minimalista/misterioso (menos info personal visible, typing effect, sin bio larga ni stats).

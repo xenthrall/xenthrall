@@ -43,16 +43,4 @@
 
 <br>
 
-<div align="center">
 
-<img
-height="180em"
-src="https://github-readme-stats-eight-theta.vercel.app/api?username=xenthrall&show_icons=true&theme=algolia&include_all_commits=true&count_private=true"
-alt="GitHub statistics"
-/> <img
-height="180em"
-src="https://github-readme-stats-eight-theta.vercel.app/api/top-langs/?username=xenthrall&layout=compact&langs_count=8&theme=algolia"
-alt="Most used languages"
-/>
-
-</div>

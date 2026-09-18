@@ -11,7 +11,7 @@
 <a href="https://github.com/xenthrall">
   <img src="https://img.shields.io/badge/GitHub-xenthrall-000000?style=flat-square&logo=github&logoColor=white" />
 </a>
-<a href="https://hello.tequia.dev">
+<a href="https://tequia.dev">
   <img src="https://img.shields.io/badge/-tequia.dev-000000?style=flat-square" />
 </a>
 
